@@ -77,7 +77,7 @@ public class AuthService {
         System.out.println("Iniciando compra de recarga: " + cellPhone + ", " + amount + ", " + supplierId);
         
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + token);
+        headers.set("Authorization", token);
         headers.set("x-api-key", apiKey);
         headers.setContentType(MediaType.APPLICATION_JSON);
     
