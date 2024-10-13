@@ -25,6 +25,15 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
+      - name: Set environment variables
+        env:
+          DB_URL: jdbc:mysql://database-puntored.cf0aece8exwj.us-east-1.rds.amazonaws.com:3306/dbpuntored?useSSL=false&serverTimezone=UTC
+          DB_USERNAME: puntoredadmin
+          DB_PASSWORD: PuntoRed123
+          API_USER: user0147
+          API_PASSWORD: \#3Q34Sh0NlDS
+        run: echo "Environment variables set"
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
