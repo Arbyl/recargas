@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.puntored.recargas.model.Transaction;
 import com.puntored.recargas.repository.TransactionRepository;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Map;
 
@@ -24,19 +24,24 @@ public class AuthService {
     private final String suppliersUrl = rawUrl + "/getSuppliers";
     private final String buyUrl = rawUrl + "/buy";
 
-    @Autowired
     public AuthService(TransactionRepository transactionRepository, ObjectMapper objectMapper, RestTemplate restTemplate) {
         this.transactionRepository = transactionRepository;
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;
     }
 
+    @Value("${API_USER}")
+    private String apiUser;
+
+    @Value("${API_PASSWORD}")
+    private String apiPassword;
+
     public String authenticate() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-api-key", apiKey);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String body = "{\"user\": \"user0147\", \"password\": \"#3Q34Sh0NlDS\"}";
+        String body = String.format("{\"user\": \"%s\", \"password\": \"%s\"}", apiUser, apiPassword);
         HttpEntity<String> request = new HttpEntity<>(body, headers);
 
         ResponseEntity<AuthResponse> response = restTemplate.postForEntity(authUrl, request, AuthResponse.class);
